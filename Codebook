@@ -1,14 +1,28 @@
-Features <- read.table("UCI HAR Dataset/features.txt", col.names = c("n","functions"))
-Activities <- read.table("UCI HAR Dataset/activity_labels.txt", col.names = c("code", "activity"))
-Subject_test <- read.table("UCI HAR Dataset/test/subject_test.txt", col.names = "subject")
-X_test <- read.table("UCI HAR Dataset/test/X_test.txt", col.names = Features$functions)
-Y_test <- read.table("UCI HAR Dataset/test/y_test.txt", col.names = "code")
-Subject_train <- read.table("UCI HAR Dataset/train/subject_train.txt", col.names = "subject")
-X_train <- read.table("UCI HAR Dataset/train/X_train.txt", col.names = Features$functions)
-Y_train <- read.table("UCI HAR Dataset/train/y_train.txt", col.names = "code")
-X <- rbind(X_train, X_test)
-Y <- rbind(Y_train, Y_test)
-Subject <- rbind(Subject_train, Subject_test)
-AllMerged <- cbind(Subject, X, Y)
-ExtData <- AllMerged %>% select(subject, code, contains("mean"), contains("std"))
-ActivityNames <- Activities[ExtData$code, 2]
+1. Read the Data
+Features: description(label) of each variables in X_test and X_train
+Activities: Description of activity IDs in y_test and y_train
+subject_test: subject IDs for test
+subject_train: subject IDs for train
+X_test: values of variables in test
+X_train: values of variables in train
+y_test: activity ID in test
+y_train: activity ID in train
+
+2. Merges the training and the test sets to create one data set.
+X: bind of x_train and x_test
+Y: bind of y_train and y_test
+Subject: bind of subject_test and subject_train
+AllMerged: bind of X, Y and Subject
+
+3. Extracts only the measurements on the mean and standard deviation for each measurement.
+ExtData: Mean and std extracted only from the 2nd column of Features
+
+4. Uses descriptive activity names to name the activities in the data set.
+ActivityNames: Giving a name on each code of Activities
+
+5. Appropriately labels the data set with descriptive variable names.
+Columns: Giving a column name on ExtData. Each column's name is updated by using gsub.
+
+6.Tidy data set
+TidyData: split-apply-combine the average of each variable for each activity and each subject.
+
